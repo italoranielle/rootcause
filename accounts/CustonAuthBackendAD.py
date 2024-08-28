@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Nov  5 07:37:05 2020
-
-@author: uia89236
-"""
 
 from django.contrib.auth.models import User
 

@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Nov  3 08:22:59 2020
-
-@author: uia89236
-"""
 from django.forms import ModelForm
 from django.contrib.auth.models import User , Permission 
 from .models import Function, Team , Member

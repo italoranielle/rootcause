@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 27 09:22:21 2020
 
-@author: uia89236
-"""
 
 
 from django.urls import path
