@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Analise - Detalhes {% endblock title %}
+
+{% block acao %} 
+
+{{ dinamicmenu|safe }} 
+
+{% endblock acao %} 
+
+{% block extra %}
+    <link href="{% static 'css/fishbone.css' %}" rel="stylesheet">
+{% endblock extra %}
+
+{% block content %} 
+    <h1 class="h3 mb-4 text-gray-800">
+        <i class="fas fa-fw fa-file-alt"></i>
+        Análise: {{ object.pk }} 
+    </h1>
+    <div class="card shadow mb-4">
+        <div class="card shadow m-3">
+           <div class="row">
+               <div class="row no-gutters align-items-center m-2 col-12">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Decrição do Problema:</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ object.problem_description }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row no-gutters align-items-center m-2 col-4">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Área:</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ object.area }}</div>
+                    </div>
+                </div>    
+                <div class="row no-gutters align-items-center m-2 col-4">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Turno:</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ object.shift }}</div>
+                    </div>
+                </div>
+                <div class="row no-gutters align-items-center m-2 col-4">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Membros:</div>
+                      {% for member in object.members.all %}
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{  member.first_name }} </div>
+                      {% endfor %}
+                    </div>
+                </div>
+              </div>
+              <div class="row mt-5 mb-2">
+                <div class="col-10">
+                 </div>
+                 <div class="col-2">
+                  <a href="{% url 'analysis_edit' object.pk %}" class="btn btn-sm btn-warning shadow-sm">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-edit"></i>
+                    </span>
+                    <span class="text">Editar</span>
+                 </a>
+                 <a href="{% url 'analysis_delete' object.pk %}" class="btn btn-sm btn-danger shadow-sm">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-trash"></i>
+                  </span>
+                  <span class="text">Deletar</span>
+               </a>
+              </div>
+
+             </div>
+          </div>   
+          <div class="row m-3">
+            {% if  object.do_w5h2 %}
+            <div class="col-12">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between 
+                              {% if object.w5h2 %}
+                                {% if object.w5h2.status == 1 %}
+                                border-left-warning
+                                {% elif object.w5h2.status == 2 %}
+                                border-left-secondary
+                                {% elif object.w5h2.status == 3 %}
+                                border-left-info
+                                {% elif object.w5h2.status == 4 %}
+                                border-left-success
+                                {% endif %}
+                              {% else %}
+                              border-left-danger
+                              {% endif %}">
+                  <h6 class="m-0 font-weight-bold text-primary">5W2h</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Opções:</div>
+                      <a class="dropdown-item" href="#w5h2" data-toggle="collapse" >Mostrar/escopnder</a>
+                      {% if object.w5h2 %}
+                        <a class="dropdown-item" href="{% url 'w5h2_edit' object.w5h2.pk %} ">Editar</a>
+                      {% else %}
+                        <a class="dropdown-item" href="{% url 'w5h2_new' object.pk %}">Criar</a>
+                      {% endif %}
+
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Content - Collapse -->
+                <div class="collapse show" id="w5h2">
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if  object.do_ishikawa %}
+            <div class="col-12">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between 
+                            {% if object.has_ishikawa %}
+                              {% if object.has_open_ishikawa %}
+                                border-left-warning
+                              {% else %}
+                               border-left-success
+                              {% endif %}
+                            {% else %}
+                              border-left-danger
+                            {% endif %}
+                              ">
+                  <h6 class="m-0 font-weight-bold text-primary">Ishikawa</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Opções:</div>
+                      <a class="dropdown-item" href="#ishikawa" data-toggle="collapse" >Mostrar/Esconder</a>
+                      <a class="dropdown-item" href="{% url 'ishikawa_view'  object.pk   %}">Abrir</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Content - Collapse -->
+                <div class="collapse show" id="ishikawa">
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            
+
+            {% if  object.do_whays %}
+            <div class="col-12">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between border-left-warning">
+                  <h6 class="m-0 font-weight-bold text-primary">5 Porquês</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Opções:</div>
+                      <a class="dropdown-item" href="#whays" data-toggle="collapse" >Mostrar/Esconder</a>
+                      <a class="dropdown-item" href="{% url 'pqs5_list'  object.pk   %}">Abrir</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Body -->
+                <div class="collapse show" id="whays">
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if  object.do_action_plan %}
+            <div class="col-12">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between border-left-warning">
+                  <h6 class="m-0 font-weight-bold text-primary">Plano de Ação</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Opções:</div>
+                      <a class="dropdown-item" href="#action_plan" data-toggle="collapse" >Mostrar/Esconder</a>
+                      <a class="dropdown-item" href="{% url 'kamban' object.pk %}">Abrir</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Body -->
+                <div class="collapse show" id="action_plan">
+
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+
+              
+          </div>
+    </div>
+ 
+{% endblock content %}
+{% block scriptextra %}
+<script>
+{% if object.w5h2 %}
+
+$.ajax({
+  url: "{% url 'w5h2_detail' object.w5h2.pk %}",
+  type: 'GET',
+  success: function(res) {
+      $('#w5h2').append(res);
+  },
+  error: function (jqXHR, exception) {
+        if (jqXHR.status == 403){
+          $('#w5h2').empty();
+          $('#w5h2').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#w5h2').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+        }
+      }
+});
+
+{% endif %}
+{% if object.do_ishikawa %}
+
+$.ajax({
+  url: "{% url 'ishikawa_itens' object.pk %}",
+  type: 'GET',
+  success: function(res) {
+      $('#ishikawa').append(res);
+  },
+  error: function (jqXHR, exception) {
+        if (jqXHR.status == 403){
+          $('#ishikawa').empty();
+          $('#ishikawa').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#ishikawa').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+        }
+      }
+});
+
+{% endif %}
+{% if object.do_whays %}
+
+$.ajax({
+  url: "{% url 'pqs5_table' object.pk %}",
+  type: 'GET',
+  success: function(res) {
+      $('#whays').append(res);
+  },
+  error: function (jqXHR, exception) {
+        if (jqXHR.status == 403){
+          $('#whays').empty();
+          $('#whays').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#whays').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+        }
+      }
+});
+
+{% endif %}
+
+{% if object.do_action_plan %}
+
+$.ajax({
+  url: "{% url 'action_list' object.pk %}",
+  type: 'GET',
+  success: function(res) {
+      $('#action_plan').append(res);
+  },
+  error: function (jqXHR, exception) {
+        if (jqXHR.status == 403){
+          $('#action_plan').empty();
+          $('#action_plan').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#action_plan').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+        }
+      }
+});
+
+{% endif %}
+</script>
+{% endblock scriptextra %}
+

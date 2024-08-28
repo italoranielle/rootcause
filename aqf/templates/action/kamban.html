@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Plano de Ação -  Kambam {% endblock title %}
+{% block acao %} 
+
+{{ dinamicmenu|safe }} 
+
+{% endblock acao %} 
+
+{% block extra %}
+<link href="{% static 'vendor/dragula/dragula.min.css' %}" rel="stylesheet">
+{% endblock extra %}
+
+{% block content %}
+  
+    <h1 class="h3 mb-4 text-gray-800">
+        <i class="fas fa-fw fa-user-cog"></i>
+        Plano de Ação
+    </h1>
+    <div class="card shadow mb-4">  
+        <div class="card-body">
+          <div class="row">
+          {% for bucket in buckets %}
+            
+            <div class="col-xl-3 col-md-6 col-sm-12">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">{{ bucket.name }}</h6>
+                </div>
+                <div class="card-body" id="bucket{{ bucket.pk }}" data-bucket="{{ bucket.pk }}">
+
+                </div>
+                <div class="card-footer">
+                  <a href="#"  data-bucket="{{ bucket.pk }}" class="btn btn-primary addtask">Nova Tarefa</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+          </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="FormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Adicionar Item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modalbody">
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">fechar</button>
+            <button type="button" id="post" class="btn btn-primary">salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+  {% csrf_token %}   
+{% endblock content %}
+{% block scriptextra %}
+<script src="{% static 'vendor/dragula/dragula.min.js' %}"></script>
+<script src="{% static 'js/kambancard.js' %}"></script>
+<script>
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+var dragAndDrop = {
+
+init: function () {
+    this.dragula();
+},
+
+dragula: function () {
+    this.dragula = dragula([
+      {% for bucket in buckets %}
+      document.querySelector('#bucket{{bucket.pk}}'),
+      {% endfor %}
+      ]).on('drop', function (el,target, source) {
+          $.ajax({
+          url: "{% url 'api_changeBucket'  %}",
+          type: 'post',
+          headers: {'X-CSRFToken': csrftoken},
+          dataType: 'json',
+          data: {
+            'task':el.id,
+            'to':target.dataset.bucket
+          },
+          success: function(res) {
+          },
+          error: function(jqXHR){
+            target.removeChild(el)
+            source.appendChild(el)
+            if (jqXHR.status == 403){
+              alert('Você não tem autorização para isso !')
+            }else{
+              alert('um erro insperado aconteceu !')
+            }
+          }
+
+        });
+      });
+}
+
+};
+
+
+dragAndDrop.init();
+
+function modalForm(url,data){
+  $.ajax({
+    url: url,
+    type: 'GET',
+    data: data,
+    success: function(res) {
+        $('#modalbody').empty();
+        $('#modalbody').append(res);
+        $('#FormModal').modal('show');
+    },error: function (jqXHR, exception) {
+        if (exception === 'parsererror') {
+          $("#modalbody").empty();
+          $('#modalbody').append(jqXHR.responseText);
+          $('#FormModal').modal('show');
+        }
+        if (jqXHR.status == 403){
+          $("#modalbody").empty();
+          $('#modalbody').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#modalbody').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+          $('#FormModal').modal('show');
+        }
+      }
+  });
+}
+
+$('.addtask').click( function (){
+  bucket = $(this).data('bucket');
+  modalForm("{% url 'action_new' analysis %}",{'bucket':bucket})
+});
+
+
+
+$.ajax({
+    url: "{% url 'api_tasks' analysis %}",
+    type: 'GET',
+    success: function(res) {
+      for (const task of res){
+        $('#bucket'+task.fields.bucket).append(kambanAddTask(task))
+      } 
+    },error: function (jqXHR, exception) {
+        if (jqXHR.status == 403){
+         alert('Você não tem autorização para isso !')
+        }
+      }
+  });
+
+  $('#post').click( function() {
+    post($('#form').attr('action'));
+  }
+);
+function post(url) {
+    $.ajax({
+        url: url ,
+        type: 'post',
+        dataType: 'json',
+        data: $('#form').serialize(),
+        success: function(res) {
+          window.location.reload();
+         
+        },
+        error: function (jqXHR, exception) {
+        if (exception === 'parsererror') {
+          $("#modalbody").empty();
+          $('#modalbody').append(jqXHR.responseText);
+        }
+        if (jqXHR.status == 403){
+          $("#modalbody").empty();
+          $('#modalbody').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#modalbody').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+        }
+      }
+    });
+}
+
+</script>
+
+
+
+
+{% endblock scriptextra %}

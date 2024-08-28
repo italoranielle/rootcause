@@ -1,0 +1,165 @@
+{% block fishe %} 
+<div class="fishbone">
+    <div class="fishbonePart">
+        <div class="fishTop">
+            <div class="listGrup">
+                <div class="listHeader">
+                    <p>Metodo:</p>
+                </div>
+                <div class="listTop g1">
+                <ul >
+                    <h6></h6>
+                  {% for ishikawa in object_list %}
+                      {% if ishikawa.categoria  == "metodo" %}
+                           <li class="icon-{{ ishikawa.procedencia }}" ><a href="{% url 'ishikawa_edit' ishikawa.pk  %}?next={{ request.path|urlencode }}">{{ ishikawa.descricao }}</a></li>
+                      {% endif %}
+                  {% endfor %}
+                </ul>
+           </div>
+               </div>
+               <!-- fim lista -->
+           <!-- fim lista grupo -->
+           
+           <div class="listGrup">
+                <div class="listHeader">
+                    <p>Materiais:</p>
+                </div>
+                <div class="listTop g2">
+                <ul >
+                    <h6></h6>
+                  {% for ishikawa in object_list %}
+                      {% if ishikawa.categoria  == "materiais" %}
+                           <li class="icon-{{ ishikawa.procedencia }}" ><a href="{% url 'ishikawa_edit' ishikawa.pk  %}?next={{ request.path|urlencode }}">{{ ishikawa.descricao }}</a></li>
+                      {% endif %}     
+                  {% endfor %}
+                </ul>
+               </div>
+               <!-- fim lista -->
+           </div>
+           <!-- fim lista grupo -->
+           
+            <div class="listGrup">
+                <div class="listHeader">
+                    <p>Mão-de-obra:</p>
+                </div>
+                <div class="listTop g3">
+                <ul >
+                    <h6></h6>
+                  {% for ishikawa in object_list %}
+                      {% if ishikawa.categoria  == "mao_de_obra" %}
+                           <li class="icon-{{ ishikawa.procedencia }}" ><a href="{% url 'ishikawa_edit' ishikawa.pk  %}?next={{ request.path|urlencode }}">{{ ishikawa.descricao }}</a></li>
+                      {% endif %}     
+                  {% endfor %}
+                </ul>
+               </div>
+               <!-- fim lista -->
+           </div>
+           <!-- fim lista grupo -->
+           
+           
+       </div>
+       <!-- fim fish Top -->
+       
+       <div class="fishCenter">
+            <div class="listGrup">
+                <div class="listTop">
+                </div>
+                <div class="listBottom">
+                </div>
+           </div>    
+
+        </div> 
+       
+       
+       
+       
+       <div class="fishBottom">
+            <div class="listGrup">
+                <div class="listBottom g1">
+                    <ul >
+                        <h6></h6>
+                       {% for ishikawa in object_list %}
+                          {% if ishikawa.categoria  == "maquina" %}
+                               <li class="icon-{{ ishikawa.procedencia }}" ><a href="{% url 'ishikawa_edit' ishikawa.pk  %}?next={{ request.path|urlencode }}">{{ ishikawa.descricao }}</a></li>
+                          {% endif %}     
+                      {% endfor %}
+                    </ul> 
+               </div>
+               <div class="listHeader">
+                    <p>Maquina:</p>
+                </div>
+               <!-- fim lista -->
+           </div>
+           <!-- fim lista grupo -->
+           
+           <div class="listGrup">
+                <div class="listBottom g2" >
+                    <ul>
+                        <h6></h6>
+                      {% for ishikawa in object_list %}
+                          {% if ishikawa.categoria  == "meio_amb" %}
+                               <li class="icon-{{ ishikawa.procedencia }}" ><a href="{% url 'ishikawa_edit' ishikawa.pk  %}?next={{ request.path|urlencode }}">{{ ishikawa.descricao }}</a></li>
+                          {% endif %}     
+                      {% endfor %}
+                    </ul>
+               </div>
+                <div class="listHeader">
+                    <p>Meio Ambiente:</p>
+                </div>                    
+               <!-- fim lista -->
+           </div>
+           <!-- fim lista grupo -->
+           
+            <div class="listGrup">
+                <div class="listBottom g3">
+                    <ul>
+                        <h6></h6>
+                      {% for ishikawa in object_list %}
+                          {% if ishikawa.categoria  == "medicao" %}
+                               <li class="icon-{{ ishikawa.procedencia }}" ><a href="{% url 'ishikawa_edit' ishikawa.pk  %}?next={{ request.path|urlencode }}">{{ ishikawa.descricao }}</a></li>
+                          {% endif %}     
+                      {% endfor %}
+                    </ul>
+               </div>
+               <div class="listHeader">
+                    <p>Medição:</p>
+                </div>
+
+               <!-- fim lista -->
+           </div>
+           <!-- fim lista grupo -->
+           
+           
+       </div>
+   <!-- fim fish Bottom -->
+   
+   </div>
+   <!-- fim fish corpo -->
+   
+   <div class="fishbonePart cabg">
+       <div class="listGrup cab">
+           <div class="card shadow mb-5">
+               <div class="card-header py-3">
+                 <h6 class="m-0 font-weight-bold text-warning">Legenda</h6>
+               </div>
+               <div class="card-body">
+                       <ul>
+                           <li class="icon-3"> PROCEDE </li>
+                           <li class="icon-2"> EM ANÁLISE </li>
+                           <li class="icon-1"> NÃO PROCEDE </li>
+                       </ul>
+               </div>
+   </div>
+           <div class="listTop cab">
+               <p> {{ componente }} </p>
+           </div>
+           <div class="listBottom cab">
+           </div>
+       </div>
+       
+   </div>
+   
+
+   
+</div>
+{% endblock fishe %}

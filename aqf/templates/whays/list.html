@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}  5Porquê's {% endblock title %}
+{% block acao %} 
+
+{{ dinamicmenu|safe }} 
+
+{% endblock acao %} 
+
+{% block content %}
+
+  
+  <h1 class="h3 mb-4 text-gray-800"><i class="fas fa-fw fa-pq5"></i>5PQ's Ordem: {{ analysis }} </h1>
+  <div class="card shadow mb-4">  
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="Table" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Origem:</th>
+                    <th>1°Porquê</th>
+                    <th>2°Porquê</th>
+                    <th>3°Porquê</th>
+                    <th>4°Porquê</th>
+                    <th>5°Porquê</th>
+                    <th> Opções </th>
+                    </tr>
+                </thead>  
+                {% for pqs in object_list %}
+                  <tr>
+                    <td>{{ pqs.ishikawa|default_if_none:'' }}</td>
+                    <td>{{ pqs.pq1|default_if_none:'' }}</td>
+                    <td>{{ pqs.pq2|default_if_none:'' }}</td>
+                    <td>{{ pqs.pq3|default_if_none:'' }}</td>
+                    <td>{{ pqs.pq4|default_if_none:'' }}</td> 
+                    <td>{{ pqs.pq5|default_if_none:'' }}</td> 
+                    <td>
+                        <a href="#" class="btn btn-warning btn-icon-split addmodaBody"
+                          data-url="{% url 'pqs5_edit' pqs.pk %}"
+                        >
+                            <span class="icon text-white-50">
+                              <i class="fas fa-edit"></i>
+                            </span>
+                            <span class="text">Editar </span>
+                        </a>
+                        {% if perms.aqf.delete_pqs5 %}
+                          <a href="{% url 'pqs5_delete' pqs.pk %}" class="btn btn-danger btn-icon-split">
+                            <span class="icon text-white-50">
+                              <i class="fas fa-window-close"></i>
+                            </span>
+                            <span class="text">Excluir</span>
+                        </a>
+                        {% endif  %}
+                    </td>
+                  </tr>
+                {% endfor %}   
+            </table>
+            <button type="button" class="btn btn-primary addmodaBody"  data-url="{% url 'pqs5_new' analysis %}" >
+              Adicionar
+            </button>
+        </div>
+    </div>
+  </div>
+        
+<div class="modal fade" id="FormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Adicionar Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalbody">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">fechar</button>
+        <button type="button" id="post" class="btn btn-primary">salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+    
+   
+        
+    
+
+    
+{% endblock content %}
+
+{% block scriptextra %}
+<script>
+
+
+$('#post').click( function() {
+    post($('#form').attr('action'));
+  }
+);
+
+function post(url) {
+    $.ajax({
+        url: url ,
+        type: 'post',
+        dataType: 'json',
+        data: $('#form').serialize(),
+        success: function(res) {
+          window.location.reload();
+         
+        },
+        error: function (jqXHR, exception) {
+        var msg = '';
+        if (exception === 'parsererror') {
+          $("#modalbody").empty();
+          $('#modalbody').append(jqXHR.responseText);
+        }
+        if (jqXHR.status == 403){
+          $("#modalbody").empty();
+          $('#modalbody').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#modalbody').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+        }
+      }
+    });
+}
+
+$('.addmodaBody').click(function(){
+  const url = $(this).data('url')
+  $.ajax({
+    url: url,
+    type: 'GET',
+    success: function(res) {
+        $('#modalbody').empty();
+        $('#modalbody').append(res);
+        $('#FormModal').modal('show');
+
+    },error: function (jqXHR, exception) {
+        var msg = '';
+        if (exception === 'parsererror') {
+          $("#modalbody").empty();
+          $('#modalbody').append(jqXHR.responseText);
+          $('#FormModal').modal('show');
+        }
+        if (jqXHR.status == 403){
+          $("#modalbody").empty();
+          $('#modalbody').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#modalbody').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+          $('#FormModal').modal('show');
+        }
+      }
+  });
+});
+
+</script>
+{% endblock scriptextra %}

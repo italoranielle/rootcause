@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+404 - Nao Encontrado
+{% endblock title %}
+
+{% block content %}
+<div class="text-center">
+    <div class="error mx-auto" data-text="404">404</div>
+    <p class="lead text-gray-800 mb-5">Pagina Não Encontrada</p>
+    <p class="text-gray-500 mb-0"> {{ exception|default:"Está pagina não existe" }}</p>
+</div>
+{% endblock content %}

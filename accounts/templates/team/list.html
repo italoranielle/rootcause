@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% load widget_tweaks %}
+{% block title %} Perfil de Usuario {% endblock title %}
+{% block content %}
+
+<div class="col-lg-12 col-md-12 col-sm-12 mb-30">
+    <div class="pd-20 card-box">
+        <h5 class="h4 text-blue mb-20">Times</h5>
+        <div class="tab">
+            <ul class="nav nav-tabs" role="tablist">
+                {% for team in teams %}
+                <li class="nav-item">
+                    <a class="nav-link {% if forloop.first %} active {% endif %} text-blue"  data-toggle="tab" href="#team{{team.pk}}"  role="tab" aria-selected="true" >{{team.name}}</a>
+                </li>
+                {% endfor %}
+                <li>
+                    <a class="btn nav-link text-blue"  href="#" data-action="novo-team" > Novo </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                {% for team in teams %}
+                <div class="tab-pane fade show {% if forloop.first %} active {% endif %}" id="team{{team.pk}}" role="tabpanel" >
+                    <div class="pd-20">
+                      <div class="row">
+
+                        <div class="col-xl-2 col-lg-6 col-sm-12 mb-30">
+                          <div class="pd-20 card-body height-100-p turno">
+                            <div class="row ">
+                              <h4 class="mb-20 h4 col-8">Turnos</h4><a href="#" data-action="novo-turno" data-team="{{team.pk}}" class="btn btn-primary col-3" >Novo </a>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-2 col-lg-6 col-sm-12 mb-30">
+                          <div class="pd-20 card-body height-100-p area">
+                            <div class="row">
+                              <h4 class="mb-20 h4 col-8">Areas</h4><a href="#" data-action="nova-area" data-team="{{team.pk}}" class="btn btn-primary col-3" >Nova </a>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-6 col-sm-12 mb-30">
+                          <div class="pd-20 card-body height-100-p">
+                            <div class="row">
+                              <h4 class="mb-20 h4 col-8">Funções</h4><a href="#" data-action="nova-func" data-team="{{team.pk}}" class="btn btn-primary col-3" >Nova </a>
+                            </div>
+                            <div class="list-group mt-2">
+                              {% for function in functions|in_team:team %}
+                              <li class="list-group-item d-flex justify-content-between align-items-center"> {{ function.title }}
+                                <a class="dropdown-toggle" href="#" role="button" id="func-{{function.pk}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu no-arrow dropdown-menu-right shadow animated--fade-in" aria-labelledby="func-{{function.pk}}">
+                                  <a class="dropdown-item" href="{% url 'delete_function' function.pk %}">Deletar</a>
+                                  <a class="dropdown-item btn" data-action="update-func" data-url="{% url 'update_function' function.pk %}" href="#">Editar</a>
+                                </div>
+                              {% endfor %}
+                              <li class="list-group-item d-flex justify-content-between align-items-center"> Owner
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-5 col-lg-8 col-sm-12 mb-30">
+                          <div class="pd-20 card-body height-100-p">
+                            <div class="row">
+                              <h4 class="mb-20 h4 col-8">Membros</h4><a href="#" data-action="nova-membro" data-team="{{team.pk}}" class="btn btn-primary col-3" >Novo </a>
+                            </div>
+                            <table class="table table-bordered mt-2" width="100%" cellspacing="0">
+                              <thead>
+                                <tr>
+                                  <th>Nome</th>
+                                  <th>email</th>
+                                  <th>Função</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              {% for member in members|in_function:team %}
+                                <tr>
+                                  <td>{{ member.user.first_name }}</td>
+                                  <td>{{ member.user.email }}</td>
+                                  <td>{{ member.function.title }}</td>
+                                  <td><a class="btn btn-outline-secondary font-16 p-0 line-height-1" role="button" data-url="{% url 'update_member' member.pk %}" data-action="edit-membro" href="#">
+                                      <i class="fas fa-edit" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="btn btn-outline-secondary font-16 p-0 line-height-1" role="button" href="{% url 'remove_member' member.pk %}">
+                                      <i class="fas fa-trash" aria-hidden="true"></i>
+                                    </a></td>
+                                </tr>
+                                {% endfor %}   
+                                <tr>
+                                  <td>{{ team.owner.first_name }}</td>
+                                  <td>{{ team.owner.email }}</td>
+                                  <td>Owner</td>
+                                  <td></td>
+                                </tr>
+                              </tbody>
+                            </table>   
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="FormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modalbody">
+         
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" id="post" class="btn btn-primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+
+{% block scriptextra %}
+<script>
+
+
+$('.btn').click( function (){
+  action = $(this).data('action');
+  team = $(this).data('team')
+  if (action == 'novo-team'){
+    modalForm("{% url 'new_team' %}",{});
+    }
+  if (action == 'nova-func'){
+    modalForm("{% url 'new_function' %}",{'team':team});
+    }
+  if (action == 'update-func'){
+    url = $(this).data('url');
+    modalForm(url,{});
+  }
+  if (action == 'nova-area'){
+    modalForm("{% url 'area_new' %}",{'team':team});
+  }
+  if (action == 'novo-turno'){
+    modalForm("{% url 'shift_new' %}",{'team':team});
+  }
+  if (action == 'nova-membro'){
+    modalForm("{% url 'add_member' %}",{'team':team});
+  }
+  if(action =='edit-membro'){
+    url = $(this).data('url');
+    modalForm(url,{});
+  }
+});
+
+
+
+function addcard(url,time,card){
+$.ajax({
+    url: url,
+    type: "GET",
+    success: function(res) {
+      $('#team'+time+' .'+card).append(res);
+    }
+  });
+}
+
+function modalForm(url,data){
+  $.ajax({
+    url: url,
+    type: 'GET',
+    data: data,
+    success: function(res) {
+        $('#modalbody').empty();
+        $('#modalbody').append(res);
+        $('#FormModal').modal('show');
+    },
+        error: function (jqXHR, exception) {
+        if (exception === 'parsererror') {
+          $("#modalbody").empty();
+          $('#modalbody').append(jqXHR.responseText);
+        }
+        if (jqXHR.status == 403){
+          $("#modalbody").empty();
+          $('#modalbody').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#modalbody').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+          $('#FormModal').modal('show');
+        }else{
+          alert('Erro desconhecido!!')
+        }
+      }
+  });
+}
+$('#post').click( function() {
+    post($('#form').attr('action'));
+  }
+);
+function post(url) {
+    $.ajax({
+        url: url ,
+        type: 'post',
+        dataType: 'json',
+        data: $('#form').serialize(),
+        success: function(res) {
+          window.location.reload();
+        },
+        error: function (jqXHR, exception) {
+        if (exception === 'parsererror') {
+          $("#modalbody").empty();
+          $('#modalbody').append(jqXHR.responseText);
+        }
+        if (jqXHR.status == 403){
+          $("#modalbody").empty();
+          $('#modalbody').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#modalbody').append('<p class="lead text-gray-800 mb-5">Você não pode alterar esse time</p>');
+          $('#FormModal').modal('show');
+        }else{
+          alert('Erro desconhecido!!')
+        }
+      }
+    });
+}
+
+{% for team in teams %}
+addcard("{% url 'shift_list' team.pk%}",{{team.pk}},'turno');
+addcard("{% url 'area_list' team.pk%}",{{team.pk}},'area');
+{% endfor %}
+
+</script>
+{% endblock scriptextra %}

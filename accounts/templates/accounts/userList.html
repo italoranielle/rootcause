@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %} Perfil de Usuario {% endblock title %}
+{% block content %}
+{% load static %}
+{% block extra %}
+    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock extra %}
+
+    <div class="container-fluid">
+        
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-warning">Lista de Usuário</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Usuario</th>
+                      <th>Nome</th>
+                      <th>Sobrenome</th>
+                      <th>E-mail</th>
+                      <th>ultimo login</th>
+                      <th>Ação</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Usuario</th>
+                      <th>Nome</th>
+                      <th>Sobrenome</th>
+                      <th>E-mail</th>
+                      <th>ultimo login</th>
+                      <th>Ação</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  {% for perfil in usuario  %}
+                    <tr>
+                      <td>{{ perfil.username}}</td>
+                      <td>{{ perfil.first_name}}</td>
+                      <td>{{ perfil.last_name}}</td>
+                      <td>{{ perfil.email}}</td>
+                      <td>{{ perfil.last_login}}</td>
+                      <td><a href="{% url 'user_update_adm' perfil.pk %}" class="btn btn-warning btn-icon-split">
+                                <span class="icon text-white-50">
+                                  <i class="fas fa-edit"></i>
+                                </span>
+                                <span class="text">Editar </span>
+                            </a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+  
+{% endblock content %}

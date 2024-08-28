@@ -1,0 +1,53 @@
+<div class="card-body">
+  <div class="row">
+  {% for bucket in buckets %}
+    
+    <div class="col-12">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">{{ bucket.name }}</h6>
+        </div>
+        <div class="card-body" id="bucket{{ bucket.pk }}" data-bucket="{{ bucket.pk }}">
+          {% for task in object_list %}
+            {% if task.bucket.pk == bucket.pk %}
+            <div class="card border-left-success shadow h-100 py-2" >
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4"> 
+                    <h5>{{ task.titulo }}</h5>
+                  </div>
+                  <div class="col-3">
+                    <i class="fas fa-fw fa-user pl-2"></i>
+                    <span class="quote2 pl-2">{{ task.quem.first_name }}</span>
+                  </div>
+                  <div class="col-2">
+                    <i class="fas fa-fw fa-calendar pl-2"></i>
+                    <span class="quote2 pl-2">{{ task.quando_inicio }}</span>
+                  </div>
+                  <div class="col-2">
+                    <i class="fas fa-fw fa-calendar pl-2"></i>
+                    <span class="quote2 pl-2">{{ task.quando_fim }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  </div> 
+</div>
+{% block scriptextra %}
+<script>
+
+
+
+</script>
+
+
+
+
+{% endblock scriptextra %}

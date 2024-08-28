@@ -1,0 +1,26 @@
+
+{% load static %}
+<div class="card-body">
+  <table class="table table-bordered" id="Table" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Origem:</th>
+          <th>1°Porquê</th>
+          <th>2°Porquê</th>
+          <th>3°Porquê</th>
+          <th>4°Porquê</th>
+          <th>5°Porquê</th>
+          </tr>
+      </thead>  
+      {% for pqs in object_list %}
+        <tr>
+          <td>{{ pqs.ishikawa|default_if_none:'' }}</td>
+          <td>{{ pqs.pq1|default_if_none:'' }}</td>
+          <td>{{ pqs.pq2|default_if_none:'' }}</td>
+          <td>{{ pqs.pq3|default_if_none:'' }}</td>
+          <td>{{ pqs.pq4|default_if_none:'' }}</td> 
+          <td>{{ pqs.pq5|default_if_none:'' }}</td> 
+        </tr>
+      {% endfor %}   
+  </table>
+</div>

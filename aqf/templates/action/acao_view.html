@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Plano de Ação {% endblock title %}
+
+{% block acao %} 
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'rai_new' %}">
+          <i class="fas fa-fw fa-file-medical"></i>
+        
+          <span>Nova AQF</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'rai_detail' n_ordem %}">
+          <i class="fas fa-fw fa-file-alt"></i>
+          <span>RAE</span>
+         </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'Mttr_check_view' n_ordem  %}">
+          <i class="fas fa-fw fa-mttr"></i>
+          <span>MTTR</span>
+         </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'ishikawa_list' n_ordem  %}">
+          <i class="fas fa-fw fa-fishbone"></i>
+          <span>Ishikawa</span>
+         </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'pqs5_list' n_ordem  %}"">
+          <i class="fas fa-fw fa-pq5"></i>
+          <span> 5PQ's</span>
+         </a>
+    </li>
+    
+
+    
+{% endblock acao %} 
+
+{% block content %}
+  
+    <h1 class="h3 mb-4 text-gray-800">
+        <i class="fas fa-fw fa-user-cog"></i>
+        Plano de Ação Ordem: {{n_ordem}}
+    </h1>
+    <div class="card shadow mb-4">  
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="Table" width="100%" cellspacing="0">
+                   <thead>
+                      <tr>
+                        <th>Oque?</th>
+                        <th>Quando?</th>
+                        <th>Quem?</th>
+                        <th>Status!</th>
+                        <th>Analise Origem da Ação</th>
+                        <th> Ação </th>
+                       </tr>
+                    </thead>  
+                    {% for acao in acoes %}
+                      <tr>
+                        <td>{{ acao.oque  }}</td>
+                        <td>{{ acao.quando }}</td>
+                        <td>{{ acao.quem }}</td>
+                        <td>{{ acao.status }}</td> 
+                        <td>{{ acao.origem }}</td> 
+                        <td>
+                            <a href="{% url 'acao_edit' acao.pk %}" class="btn btn-warning btn-icon-split">
+                                <span class="icon text-white-50">
+                                  <i class="fas fa-edit"></i>
+                                </span>
+                                <span class="text">Editar</span>
+                            </a>
+                        </td>
+                      </tr>
+                    {% endfor %}   
+                    <tr>
+                        <form action="{% url 'acao_new' n_ordem %}" method ="POST" novalidate>
+                              {% csrf_token %}
+                            
+                              {% for hidden_field in form.hidden_fields %}
+                                {{ hidden_field }}
+                              {% endfor %}
+                            
+                              {% for field in form.visible_fields %}
+                                <td>
+                                  {% render_field field class="form-control" %} 
+                                </td>
+                              {% endfor %}
+                               <td> <input type="submit" class="btn btn-success" value="Salvar"> </td>
+                         </form>
+                    </tr>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+    <div>
+        <a href="{% url 'rai_detail' n_ordem %}" class="btn btn-danger btn-icon-split">
+            <span class="icon text-white-50">
+              <i class="fas fa-window-close"></i>
+            </span>
+            <span class="text">Finalizar</span>
+        </a>
+    </div>
+    
+
+    
+{% endblock content %}

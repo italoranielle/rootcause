@@ -1,0 +1,136 @@
+
+ .fishbone{
+ display: flex;
+ justify-content: center;
+ box-sizing: content-box ;
+ line-height: 80%;
+ margin-left:2rem;
+
+}
+ 
+
+.listGrup, .fishbonePart{
+  display: inline-block;
+ 
+   
+}
+
+.listHeader {
+  margin-left: -1.4rem;
+  width: 10rem;
+  height: 4rem;
+  background: #05C7F2;
+  padding: 1.0rem;
+  line-height: 85%;
+  color: black;
+}
+
+
+
+.listTop {
+  margin-left:2rem;
+  background: #05C7F2;
+  height: 19rem;
+  width: 10rem;
+  transform: skewX(20deg); 
+  padding: 1.0rem;
+  line-height: 50%;
+
+
+  
+}
+
+.listBottom {
+  margin-left:2rem;
+  background: #05C7F2;
+  height: 19rem;
+  width: 10rem;
+  transform: skewX(-20deg);
+  padding: 1.0rem;
+  line-height: 50%;
+}
+
+
+
+.listGrup ul{
+    margin-left: -1.8rem;
+    line-height: 85%;
+    display: flex;
+	justify-content: center;
+	flex-direction: column;
+   
+}
+
+.listBottom li{
+    transform: skewX(20deg);
+    line-height: 85%;
+
+    
+}
+
+.listTop li {
+    transform: skewX(-20deg);   
+    line-height: 85%;
+    
+}
+
+.listTop  p{
+     
+     transform: skewX(-20deg);
+     margin: 1rem 0rem 1.5rem 0rem;
+     line-height:85%;
+     
+     
+ 
+ }
+
+.fishbone a{
+    line-height: 95%;
+    margin: 0.5rem 0rem 0.5rem 0rem;
+}
+
+.fishCenter{
+    margin: -3.5rem 0rem -0.25rem -3.5rem;
+    
+}
+
+.fishCenter .listTop , .fishCenter .listBottom{
+    width: 47rem;
+    height: 3.5rem;
+    margin-left: 1rem;
+   
+}
+
+.cab{
+    height: 5rem;
+
+   
+}
+
+.cabg{
+    display: flex;
+    justify-content: center;
+
+  
+}
+
+.cabg .listGrup{
+   margin-top: 5rem;
+   margin-left: -10%;
+    
+
+}
+
+.icon-1{
+    
+    list-style-image: url("/static/icons/x15.png");
+}
+
+.icon-2{
+    list-style-image: url("/static/icons/art15.png");
+}
+
+.icon-3{
+    list-style-image: url("/static/icons/ok15.png");
+}
+

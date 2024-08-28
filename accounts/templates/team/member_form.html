@@ -1,0 +1,23 @@
+{% load widget_tweaks %}
+
+{% block content %}
+    <form method="post" id="form" action="{{ request.path }}" data-type="{{ form_type }}" novalidate>
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="mail">Email address</label>
+        <small class='text-danger'>*</small>
+        <input type="email" class="form-control" id="mail" name="mail" placeholder="name@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="function">Função</label>
+        <small class='text-danger'>*</small>
+        <select class="form-control" id="function" name="function" required> 
+          <option>selecione</option>
+          {% for function in functions %}
+          <option value="{{function.pk}}">{{function.title}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+    
+{% endblock content %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Análise {% endblock title %}
+
+{% block acao %} 
+    
+    <li class="nav-item">
+        <a class="nav-link" href="">
+          <i class="fas fa-fw fa-file-medical"></i>
+          <span>Nova Análise</span></a>
+    </li>
+{% endblock acao %} 
+
+{% block content %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Análises:</h1>
+        <a href="{% url 'analysis_new' %}" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Nova Analise</a>  
+    </div>
+    <div class="row">
+       {% if alert %}
+       <div class="alert alert-danger" role="alert">
+        Você não faz parte de um time! Configure seu time em <a href="{% url 'myteams' %}">time</a> ou solicite a um colega a sua inclusão. Isso irá lhe impedir de criar uma análise
+        </div>
+       {% endif %}
+        {% for analysis in object_list %}
+            <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <a href="{{ analysis.get_absolute_url }}">
+                         <h6 class="m-0 font-weight-bold text-warning">{{ analysis.pk }}</h6>
+                    </a>
+                </div>
+                <div class="card-body">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Problema</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ analysis.problem_description }}</div>
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Área:</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ analysis.area }}</div>
+                </div>
+            </div>
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock content %}

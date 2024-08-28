@@ -1,0 +1,119 @@
+
+{% load static %}
+
+<div class="card-body">
+        <div class="card shadow m-3">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card shadow mb-4">
+                        <a href="#collapseCardOque" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardOque">
+                        <h6 class="m-0 font-weight-bold text-warning">Oque?</h6>
+                        </a>
+                            <div class="collapse show" id="collapseCardOque">
+                            <div class="card-body font-weight-bold text-gray-800">
+                                {{ object.oque }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">     
+                    <div class="card shadow mb-4">
+                        <a href="#collapseCardOnde" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                        <h6 class="m-0 font-weight-bold text-warning">Onde?</h6>
+                        </a>
+                        <div class="collapse show" id="collapseCardOnde">
+                        <div class="card-body font-weight-bold text-gray-800">
+                            {{ object.onde }}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card shadow mb-4">
+                        <a href="#collapseCardQuando" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardOque">
+                        <h6 class="m-0 font-weight-bold text-warning">Quando?</h6>
+                        </a>
+                        <div class="collapse show" id="collapseCardQuando">
+                        <div class="card-body font-weight-bold text-gray-800">
+                            {{ object.quando }}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">     
+                    <div class="card shadow mb-4">
+                        <a href="#collapseCardQuem" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                        <h6 class="m-0 font-weight-bold text-warning">Quem?</h6>
+                        </a>
+                        <div class="collapse show" id="collapseCardQuem">
+                        <div class="card-body font-weight-bold text-gray-800">
+                            {{ object.quem}}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card shadow mb-4">
+                        <a href="#collapseCardQual" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardOque">
+                        <h6 class="m-0 font-weight-bold text-warning">Qual?</h6>
+                        </a>
+                        <div class="collapse show" id="collapseCardQual">
+                        <div class="card-body font-weight-bold text-gray-800">
+                            {{ object.qual }}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">     
+                    <div class="card shadow mb-4">
+                        <a href="#collapseCardComo" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                        <h6 class="m-0 font-weight-bold text-warning">Como?</h6>
+                        </a>
+                        <div class="collapse show" id="collapseCardComo">
+                        <div class="card-body font-weight-bold text-gray-800">
+                            {{ object.como }}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="card shadow m-3">
+            <div class="row">  
+                <div class="row no-gutters align-items-center m-2 col-xl-4 ">
+                    <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Componente indentificado pós interveção:</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ object.componete_pos_intervencao }}</div>
+                </div>
+            </div>
+            <div class="row no-gutters align-items-center m-2 col-xl-4 ">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Modo de falha indentificado pós interveção: </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ object.modo_falha }}</div>
+                </div>
+            </div>
+            </div>
+            <div class="row"> 
+                <!--
+            <div class="row no-gutters align-items-center m-2 col-xl-2 ">
+                    <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Status:</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ object.get_status_display }}</div>
+                    </div>
+            </div>-->
+            <div class="row no-gutters align-items-center m-2 col-xl-2 ">
+                    <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Criada por:</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ object.criado_por.first_name }}</div>
+                    </div>
+            </div>
+            </div>
+        </div>    
+</div>

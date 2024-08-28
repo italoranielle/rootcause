@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Ishikawa {% endblock title %}
+{% block extra %}
+    <link href="{% static 'css/fishbone.css' %}" rel="stylesheet">
+{% endblock extra %}
+
+{% block acao %} 
+
+{{ dinamicmenu|safe }} 
+
+{% endblock acao %} 
+
+{% block content %}
+ <h1 class="h3 mb-4 text-gray-800">
+     <i class="fas fa-fw fa-fishbone"></i>
+     Ishikawa Análise ID: {{ analysis }}
+ </h1>
+
+<div>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#FormModal">
+    Novo Item
+  </button>
+
+  <div class="card mb-2 py-3" id="fishbone">
+
+  </div>
+    
+  <div class="row no-gutters align-items-center m-6">
+      <a href="{% url 'ishikawa_generate_pqs5' analysis %}"  class="btn btn-success btn-icon-split">
+          <span class="icon text-white-50">
+            <i class="fas  fa-arrow-right"></i>
+          </span>
+          <span class="text">Gerar 5 Porquês !</span>
+        </a>
+  </div>
+
+</div>
+
+
+<div class="modal fade" id="FormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Adicionar Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalbody">
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="button" id="post" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+
+{% block scriptextra %}
+<script>
+function createWhays(){
+  $.ajax({
+    url: "{% url 'ishikawa_generate_pqs5' analysis %}",
+    type: 'GET',
+    success: function(res) {
+      window.location.href = "{% url 'pqs5_list' analysis %}"
+    }
+  });
+}
+
+
+$('#post').click( function() {
+    $.ajax({
+        url: "{% url 'ishikawa_new' analysis %}",
+        type: 'post',
+        dataType: 'json',
+        data: $('form#new').serialize(),
+        success: function(res) {
+          $("#modalbody").empty();
+          if(typeof res == 'string'){
+            $('#modalbody').append(data);
+          }
+          else{
+            $('#FormModal').modal('hide')
+            updateFishbone()
+          }        
+        },error: function (jqXHR, exception) {
+        if (exception === 'parsererror') {
+          $("#modalbody").empty();
+          $('#modalbody').append(jqXHR.responseText);
+        }
+        if (jqXHR.status == 403){
+          $("#modalbody").empty();
+          $('#modalbody').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#modalbody').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+        }
+      }
+    });
+});
+
+$('#FormModal').on('show.bs.modal', function (event) {
+  $.ajax({
+    url: "{% url 'ishikawa_new' analysis %}",
+    type: 'GET',
+    success: function(res) {
+        $('#modalbody').empty()
+        $('#modalbody').append(res);
+    },error: function (jqXHR, exception) {
+        if (jqXHR.status == 403){
+          $("#modalbody").empty();
+          $('#modalbody').append('<div class="error mx-auto" data-text="403">403</div>');
+          $('#modalbody').append('<p class="lead text-gray-800 mb-5">Sem Autorização</p>');
+        }
+      }
+  });
+});
+function updateFishbone(){
+  $.ajax({
+    url: "{% url 'ishikawa_itens' analysis %}",
+    type: 'GET',
+    success: function(res) {
+      $('#fishbone').empty()
+      $('#fishbone').append(res);
+    }
+  });
+}
+updateFishbone();
+
+</script>
+{% endblock scriptextra %}
