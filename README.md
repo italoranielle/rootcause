@@ -17,7 +17,9 @@ V 2.1.0 em dedemvolvimento
   - Relatorio de análise ( pagina de busca , data ,titulo, time ...)
 
 Mapeado para desenvolvimento
-  Tradução
-  log de atividade 
-  Bukets do kambam personalizaveis
-  Status da analise (criada, revisada, finalizada)
+ - Tradução
+ - log de atividade 
+ - Bukets do kambam personalizaveis
+ - Status da analise (criada, revisada, finalizada)
+ - Dashboard
+ - Reponsividade da tela de ishikawa
