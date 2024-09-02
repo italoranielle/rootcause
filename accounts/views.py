@@ -78,7 +78,8 @@ class UpdateAdmin(PermissionRequiredMixin,UpdateView):
     template_name = 'accounts/update.html'
     permission_required = 'auth.change_user'
     success_url = reverse_lazy('list_user')
-    
+
+@login_required    
 def TeamView(request):
     teams = Team.objects.filter(Q(function__member__user = request.user) | Q(owner= request.user) ).distinct()
     functions = Function.objects.filter(team__in = teams)
