@@ -332,6 +332,11 @@ class whaysNew(UserPassesTestMixin,CreateView):
         team_pk = Analysis.objects.get(pk=self.kwargs['analysis']).team.pk
         return is_in_team_and_has_permission(self.request.user,team_pk,'aqf.add_pqs5')
 
+    def get_form_kwargs(self):
+        kwargs = super(whaysNew, self).get_form_kwargs()
+        kwargs['analysis'] = self.kwargs['analysis']
+        return kwargs
+
     def get_context_data(self, **kwargs):
         context = super(whaysNew, self).get_context_data(**kwargs)
         context['form_type'] =  'new'

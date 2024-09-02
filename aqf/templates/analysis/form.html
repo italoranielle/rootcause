@@ -61,14 +61,14 @@ $('#id_team').on('change', function() {
   $("#id_shift").empty();
   $("#id_members").empty();
   var team = $(this).val();
-  for( var val in teams[team].area ){
-    $("#id_area").append(areaOps.val(teams[team].area[val]));
+  for( let x of teams[team].area ){
+    $("#id_area").append(areaOps.val(x));
   }
-  for( var val in teams[team].turno ){
-    $("#id_shift").append(shiftOps.val(teams[team].turno[val]));   
+  for( let x of  teams[team].turno ){
+    $("#id_shift").append(shiftOps.val(x));   
   }
-  for( var val in teams[team].membro ){
-    $("#id_members").append(memberOps.val(teams[team].membro[val])); 
+  for( let x of teams[team].membro ){
+    $("#id_members").append(memberOps.val(x)); 
   }
 
   

@@ -9,7 +9,7 @@ from django.contrib import messages
 from .forms import profileForm ,userAdminForm , FunctionForm , MemberForm , SignUpForm
 from django.views.generic import UpdateView ,CreateView ,DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin ,UserPassesTestMixin
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied , ObjectDoesNotExist
 from .auth_helper import get_sign_in_url, get_token_from_code, store_token, store_user, remove_user_and_token, get_token
 from .graph_helper import get_user, get_calendar_events
 from django.http import JsonResponse
@@ -90,7 +90,11 @@ def TeamView(request):
 
 def addMember(request):
     if request.method == 'POST':
-        user = User.objects.get(email= request.POST.get('mail'))
+        try:
+            user = User.objects.get(email= request.POST.get('mail'))
+        except ObjectDoesNotExist:
+            messages.error(request, 'Usuario não cadastrado ou e-mail incorreto!')
+            return JsonResponse({'msg':'user error'})
         function = Function.objects.get(pk= request.POST.get('function'))
         Member(user=user,function=function).save()
         return JsonResponse({'msg':'saved'})
