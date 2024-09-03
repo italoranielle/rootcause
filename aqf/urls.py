@@ -10,7 +10,7 @@ from django.urls import path ,re_path
 from . import views
 
 urlpatterns = [
-    path('home', views.home, name = 'home'),
+    path('', views.home, name = 'home'),
     #path('analysis/<int:team>',views.AnalysisList.as_view(),name='analysis_list'),
     path('analysis/',views.AnalysisList.as_view(),name='analysis_list'),
     path('analysis/new/',views.AnalysisCreateView.as_view(),name='analysis_new'),
