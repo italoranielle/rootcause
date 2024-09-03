@@ -388,7 +388,6 @@ class WhaysTableView(UserPassesTestMixin,ListView):
 class whaysDeleteView(UserPassesTestMixin,DeleteView):
     model = Pqs5
     template_name = 'generic/delete.html'
-    form_class = Psq5Form
     permission_denied_message = 'Você não pode deletar item do 5 porquês! Você não tem a permição nescessaria ou não faz parte do time'
 
     def test_func(self):
@@ -396,7 +395,7 @@ class whaysDeleteView(UserPassesTestMixin,DeleteView):
 
     def get_success_url(self):
         analysis = Pqs5.objects.get(pk = self.kwargs['pk'])
-        analysis = analysis.id
+        analysis = analysis.analysis.id
         return reverse_lazy('pqs5_list',kwargs ={'analysis':analysis})
 
 #-------------------------action-plan
@@ -518,7 +517,7 @@ class ActionDeleteView(UserPassesTestMixin,DeleteView):
 
     def get_success_url(self):
         analysis = Acao.objects.get(pk = self.kwargs['pk'])
-        analysis = analysis.id
+        analysis = analysis.analysis.id
         return reverse_lazy('kamban',kwargs ={'analysis':analysis})
 #-------------------------
 
