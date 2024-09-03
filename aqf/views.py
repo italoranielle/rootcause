@@ -362,6 +362,11 @@ class whaysEditView(UserPassesTestMixin,UpdateView):
         context['form_type'] =  'update'
         return context
 
+    def get_form_kwargs(self):
+        kwargs = super(whaysEditView, self).get_form_kwargs()
+        kwargs['analysis'] = Pqs5.objects.get(pk = self.kwargs['pk']).analysis.pk
+        return kwargs
+
     def form_valid(self , form):
         obj = form.save(commit = False)
         obj.save()
