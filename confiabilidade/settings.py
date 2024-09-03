@@ -82,6 +82,10 @@ TEMPLATES = [
     
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+'https://*.railway.app'
+]
+
 WSGI_APPLICATION = 'confiabilidade.wsgi.application'
 
 
