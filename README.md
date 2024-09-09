@@ -18,16 +18,22 @@ V 2.0.2 em produção
 - Bugfix redirecionar apos Deletar 5 porquês
 - Bugfix redirecionar apos Deletar acao
 
-V 2.1.0 em dedemvolvimento
+V 2.1.0 em homologação
+  - analisis
+    - Mudança no card
+    - Menu de busca
+    - Paginação
+  - email de usuario como campo unico
+  - analises campo membros nao orbigatorio
+
+V 2.2.0 next
   - Login com conta microsoft
-  - Paginação da tela de listagem de análise
-  - Relatorio de análise ( pagina de busca , data ,titulo, time ...)
+  - Dashboard
+  - Tradução
 
 Mapeado para desenvolvimento
- - Tradução
  - log de atividade 
  - Bukets do kambam personalizaveis
  - Status da analise (criada, revisada, finalizada)
- - Dashboard
  - Reponsividade da tela de ishikawa
  - envio de e-mail de convite para usuario não cadastrado

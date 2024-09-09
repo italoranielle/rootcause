@@ -4,6 +4,8 @@ from django.contrib.auth.models import Group
 from django.db.models.signals import post_save, pre_save ,  pre_delete
 from django.dispatch import receiver
 
+User._meta.get_field('email')._unique = True
+
 class Win(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     jobTitle = models.CharField(max_length=250)

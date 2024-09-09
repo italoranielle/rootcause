@@ -16,26 +16,6 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from .funcs import is_in_team_and_has_permission
 
 
-"""
-class RaiSearchView(ListView):
-    model = Rai
-    template_name = 'aqf/rai_view.html'
-
-    def get_queryset(self):
-        try:
-            search = self.request.GET.get('q')
-        except:
-            search = ''
-        try:
-            search = int(search)
-            object_list = Rai.objects.filter(Q(ordem=int(search)))
-        except:
-            if (search != ''):
-                object_list = Rai.objects.filter(Q(fenomenos__icontains = search) | Q(maquina__icontains = search) )
-            else:
-                object_list = Rai.objects.all()
-        return object_list
-"""  
 def dinamicMenu(analysis):
     analysis = Analysis.objects.get(pk=analysis)
     menu = """
@@ -101,15 +81,33 @@ def home(request):
 class AnalysisList(LoginRequiredMixin,ListView):
     model = Analysis
     template_name = 'analysis/list.html'
+    paginate_by = 50
 
     def get_context_data(self, **kwargs):
         context = super(AnalysisList ,self).get_context_data(**kwargs)
-        context['alert']= False if Team.objects.filter(Q(function__member__user = self.request.user) | Q(owner= self.request.user)  ).count() > 0 else True
+        teams = Team.objects.filter(Q(function__member__user = self.request.user) | Q(owner= self.request.user) ).distinct()
+        context['teams'] = teams
+        context['areas'] = Area.objects.filter(team__in = teams)
+        context['shifts'] = Shift.objects.filter(team__in = teams)
+        context['alert'] = False if teams.count() > 0 else True
+        context['query'] = self.request.GET
         return context
 
     def get_queryset(self):
         meusTeams = Team.objects.filter(Q(function__member__user = self.request.user) | Q(owner= self.request.user)  ).distinct()
         object_list = Analysis.objects.filter(Q(team__in= meusTeams))
+
+        if self.request.GET.get('problem',None):
+           object_list = object_list.filter(problem_description__icontains = self.request.GET.get('problem') )
+        if self.request.GET.get('team',None):
+            object_list = object_list.filter(team = self.request.GET.get('team') )
+        if self.request.GET.get('area',None):
+            object_list = object_list.filter(area = self.request.GET.get('area'))
+        if self.request.GET.get('shift',None):
+            object_list = object_list.filter(shift = self.request.GET.get('shift'))
+        #if self.request.GET.get('componente',None):
+        #    object_list.objects.filter(W5h2__componente = self.request.GET.get('componente'))
+        
         return object_list
 
 

@@ -25,7 +25,7 @@ class Analysis(models.Model):
         team = models.ForeignKey(Team,on_delete= models.RESTRICT)
         area= models.ForeignKey(Area, on_delete= models.RESTRICT)
         shift = models.ForeignKey(Shift, on_delete= models.RESTRICT) 
-        members = models.ManyToManyField(User,related_name='member_analysis_set')
+        members = models.ManyToManyField(User,related_name='member_analysis_set', null = True, blank = True)
         created_by = models.ForeignKey(User,related_name='creator_analysis_set',on_delete= models.RESTRICT)
 
         def has_open_ishikawa(self):
