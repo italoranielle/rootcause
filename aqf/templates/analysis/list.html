@@ -12,6 +12,50 @@
 {% endblock acao %} 
 
 {% block content %}
+<form action="" method="get">
+	<div class="row">
+		<div class="col-md-4 col-sm-12">
+			<div class="form-group">
+				<label>Problema</label>
+				<input name="problem" type="text" class="form-control">
+			</div>
+		</div>
+		<div class="col-md-2 col-sm-12">
+			<div class="form-group">
+				<label>Time</label>
+                <select name="team"  class="custom-select col-12">
+                    <option value=""></option>
+                    {% for team in teams %}
+                    <option value="{{ team.pk }}">{{ team }}</option>
+                    {% endfor %}
+                </select>
+			</div>
+		</div>
+		<div class="col-md-2 col-sm-12">
+			<div class="form-group">
+				<label>Area</label>
+				<select name="area"  class="custom-select col-12">
+                    <option value=""></option>
+                    {% for area in areas %}
+                    <option value="{{ area.pk }}">{{ area }}</option>
+                    {% endfor %}
+                </select>
+			</div>
+		</div>
+        <div class="col-md-2 col-sm-12">
+			<div class="form-group">
+				<label>Turno</label>
+				<select name="shift"  class="custom-select col-12">
+                    <option value=""></option>
+                    {% for shift in shifts %}
+                    <option value="{{ shift.pk }}">{{ shift }}</option>
+                    {% endfor %}
+                </select>
+			</div>
+		</div>
+        <button class="d-none d-sm-inline-block btn btn-sm btn-info mt-4 mb-3" type="submit"><i class="fa fa-search"></i> Buscar</button>
+	</div>
+</form>
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Análises:</h1>
         <a href="{% url 'analysis_new' %}" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Nova Analise</a>  
@@ -23,22 +67,41 @@
         </div>
        {% endif %}
         {% for analysis in object_list %}
-            <div class="col-lg-6">
+            <div class="col-lg-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <a href="{{ analysis.get_absolute_url }}">
-                         <h6 class="m-0 font-weight-bold text-warning">{{ analysis.pk }}</h6>
+                         <h6 class="m-0 font-weight-bold text-warning">{{ analysis.pk }} - {{ analysis.problem_description }} </h6>
                     </a>
                 </div>
                 <div class="card-body">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Problema</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ analysis.problem_description }}</div>
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Área:</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ analysis.area }}</div>
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Time:</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ analysis.team }}</div>
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Área:</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ analysis.area }}</div>
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Turno:</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ analysis.shift }}</div>
                 </div>
             </div>
             </div>
 
         {% endfor %}
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number}}&problem={{ query.problem}}&team={{ query.team }}&area={{ query.area }}&shift={{ query.shift }}">anterior</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&problem={{ query.problem}}&team={{ query.team }}&area={{ query.area }}&shift={{ query.shift }}">proxima</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&problem={{ query.problem}}&team={{ query.team }}&area={{ query.area }}&shift={{ query.shift }}">Ultima &raquo;</a>
+            {% endif %}
+        </span>
     </div>
 {% endblock content %}
